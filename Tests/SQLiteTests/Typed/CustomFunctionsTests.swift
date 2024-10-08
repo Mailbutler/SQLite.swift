@@ -1,5 +1,5 @@
 import XCTest
-import SQLite
+import SQLiteSwift
 
 // https://github.com/stephencelis/SQLite.swift/issues/1071
 #if !os(Linux)

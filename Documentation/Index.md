@@ -207,7 +207,7 @@ This will automatically add a dependency to the SQLCipher pod as well as
 extend `Connection` with methods to change the database key:
 
 ```swift
-import SQLite
+import SQLiteSwift
 
 let db = try Connection("path/to/encrypted.sqlite3")
 try db.key("secret")
@@ -263,7 +263,7 @@ To use SQLite.swift classes or structures in your target’s source file, first
 import the `SQLite` module.
 
 ```swift
-import SQLite
+import SQLiteSwift
 ```
 
 
