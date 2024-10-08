@@ -38,7 +38,7 @@ syntax _and_ intent.
 ## Usage
 
 ```swift
-import SQLite
+import SQLiteSwift
 
 // Wrap everything in a do...catch to handle errors
 do {

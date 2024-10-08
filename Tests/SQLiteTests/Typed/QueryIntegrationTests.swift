@@ -8,7 +8,7 @@ import SQLiteSwiftCSQLite
 #else
 import SQLite3 // SystemSQLite
 #endif
-@testable import SQLite
+@testable import SQLiteSwift
 
 class QueryIntegrationTests: SQLiteTestCase {
 

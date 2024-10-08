@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A121AC441CA35C79005A31D1"
-               BuildableName = "SQLite.framework"
+               BuildableName = "SQLiteSwift.framework"
                BlueprintName = "SQLite watchOS"
                ReferencedContainer = "container:SQLite.xcodeproj">
             </BuildableReference>
@@ -44,7 +44,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A121AC441CA35C79005A31D1"
-            BuildableName = "SQLite.framework"
+            BuildableName = "SQLiteSwift.framework"
             BlueprintName = "SQLite watchOS"
             ReferencedContainer = "container:SQLite.xcodeproj">
          </BuildableReference>
@@ -60,7 +60,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A121AC441CA35C79005A31D1"
-            BuildableName = "SQLite.framework"
+            BuildableName = "SQLiteSwift.framework"
             BlueprintName = "SQLite watchOS"
             ReferencedContainer = "container:SQLite.xcodeproj">
          </BuildableReference>

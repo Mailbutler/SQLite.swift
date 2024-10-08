@@ -216,7 +216,7 @@ Within Xcode add your local `AppDependencies` wrapper package as a package depen
 Using the `SQLCipher` trait will cause SQLite.swift to include a dependency on SQLCipher.swift and enable `Connection` methods to set and change the database key:
 
 ```swift
-import SQLite
+import SQLiteSwift
 
 let db = try Connection("path/to/encrypted.sqlite3")
 try db.key("secret")
@@ -325,7 +325,7 @@ To install SQLite.swift as an Xcode sub-project:
 
  4. **Add**.
 
-You should now be able to `import SQLite` from any of your target’s source
+You should now be able to `import SQLiteSwift` from any of your target’s source
 files and begin using SQLite.swift.
 
 Some additional steps are required to install the application on an actual
@@ -344,7 +344,7 @@ To use SQLite.swift classes or structures in your target’s source file, first
 import the `SQLite` module.
 
 ```swift
-import SQLite
+import SQLiteSwift
 ```
 
 

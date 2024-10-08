@@ -1,6 +1,6 @@
 import XCTest
 import Foundation
-@testable import SQLite
+@testable import SQLiteSwift
 
 class ConnectionPragmaTests: SQLiteTestCase {
     func test_userVersion() {

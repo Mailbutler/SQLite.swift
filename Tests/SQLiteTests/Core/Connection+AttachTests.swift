@@ -1,6 +1,6 @@
 import XCTest
 import Foundation
-@testable import SQLite
+@testable import SQLiteSwift
 
 #if StandaloneSQLite
 import sqlite3
