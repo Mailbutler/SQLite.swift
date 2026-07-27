@@ -3,7 +3,7 @@ import PackageDescription
 let applePlatforms: [PackageDescription.Platform] = [.iOS, .macOS, .watchOS, .tvOS, .visionOS]
 
 let target: Target = .target(
-    name: "SQLite",
+    name: "SQLiteSwift",
     dependencies: [
         .product(name: "SQLiteSwiftCSQLite",
                  package: "CSQLite",
@@ -12,6 +12,7 @@ let target: Target = .target(
                  package: "SQLCipher.swift",
                  condition: .when(platforms: applePlatforms, traits: ["SQLCipher"]))
     ],
+    path: "Sources/SQLite",
     exclude: ["Info.plist"],
     resources: [.copy("PrivacyInfo.xcprivacy")],
     cSettings: [
@@ -21,7 +22,7 @@ let target: Target = .target(
 
 let testTarget: Target = .testTarget(
     name: "SQLiteTests",
-    dependencies: ["SQLite"],
+    dependencies: ["SQLiteSwift"],
     exclude: ["Info.plist"],
     resources: [.copy("Resources")]
 )
@@ -43,8 +44,8 @@ let package = Package(
         .visionOS(.v1)
     ],
     products: [
-        .library(name: "SQLite", targets: ["SQLite"]),
-        .library(name: "SQLite-Dynamic", type: .dynamic, targets: ["SQLite"])
+        .library(name: "SQLite", targets: ["SQLiteSwift"]),
+        .library(name: "SQLite-Dynamic", type: .dynamic, targets: ["SQLiteSwift"])
     ],
     traits: [
         .trait(name: "SystemSQLite",
