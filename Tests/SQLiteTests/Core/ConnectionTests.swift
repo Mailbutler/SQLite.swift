@@ -87,7 +87,7 @@ class ConnectionTests: SQLiteTestCase {
         XCTAssertThrowsError(
             try db.run("INSERT INTO \"users\" (email, age, admin) values ('invalid@example.com', 12, 'invalid')")
         ) { error in
-            if case SQLite.Result.error(_, let code, _) = error {
+            if case SQLiteSwift.Result.error(_, let code, _) = error {
                 XCTAssertEqual(SQLITE_CONSTRAINT, code)
             } else {
                 XCTFail("expected error")

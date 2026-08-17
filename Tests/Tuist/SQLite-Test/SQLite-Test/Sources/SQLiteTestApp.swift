@@ -1,7 +1,7 @@
 import SwiftUI
-import SQLite
+import SQLiteSwift
 
-let connection = try! SQLite.Connection(.inMemory)
+let connection = try! SQLiteSwift.Connection(.inMemory)
 
 @main
 struct SQLiteTestApp: App {
