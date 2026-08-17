@@ -10,7 +10,7 @@ import SQLite3 // SystemSQLite
 #endif
 
 extension Connection {
-    private typealias Aggregate = @convention(block) (Int, Context, Int32, Argv) -> Void
+    private typealias Aggregate = @convention(block) @Sendable (Int, Context, Int32, Argv) -> Void
 
     /// Creates or redefines a custom SQL aggregate.
     ///
@@ -44,9 +44,9 @@ extension Connection {
             _ functionName: String,
             argumentCount: UInt? = nil,
             deterministic: Bool = false,
-            step: @escaping ([Binding?], UnsafeMutablePointer<T>) -> Void,
-            final: @escaping (UnsafeMutablePointer<T>) -> Binding?,
-            state: @escaping () -> UnsafeMutablePointer<T>) {
+            step: @escaping @Sendable ([Binding?], UnsafeMutablePointer<T>) -> Void,
+            final: @escaping @Sendable (UnsafeMutablePointer<T>) -> Binding?,
+            state: @escaping @Sendable () -> UnsafeMutablePointer<T>) {
 
         let argc = argumentCount.map { Int($0) } ?? -1
         let box: Aggregate = { (stepFlag: Int, context: Context, argc: Int32, argv: Argv) in
@@ -90,22 +90,22 @@ extension Connection {
         register(functionName, argc: argc, value: box)
     }
 
-    public func createAggregation<T: AnyObject>(
+    public func createAggregation<T: AnyObject & Sendable>(
             _ aggregate: String,
             argumentCount: UInt? = nil,
             deterministic: Bool = false,
             initialValue: T,
-            reduce: @escaping (T, [Binding?]) -> T,
-            result: @escaping (T) -> Binding?
+            reduce: @escaping @Sendable (T, [Binding?]) -> T,
+            result: @escaping @Sendable (T) -> Binding?
     ) {
-        let step: ([Binding?], UnsafeMutablePointer<UnsafeMutableRawPointer>) -> Void = { (bindings, ptr) in
+        let step: @Sendable ([Binding?], UnsafeMutablePointer<UnsafeMutableRawPointer>) -> Void = { (bindings, ptr) in
             let pointer = ptr.pointee.assumingMemoryBound(to: T.self)
             let current = Unmanaged<T>.fromOpaque(pointer).takeRetainedValue()
             let next = reduce(current, bindings)
             ptr.pointee = Unmanaged.passRetained(next).toOpaque()
         }
 
-        let final: (UnsafeMutablePointer<UnsafeMutableRawPointer>) -> Binding? = { ptr in
+        let final: @Sendable (UnsafeMutablePointer<UnsafeMutableRawPointer>) -> Binding? = { ptr in
             let pointer = ptr.pointee.assumingMemoryBound(to: T.self)
             let obj = Unmanaged<T>.fromOpaque(pointer).takeRetainedValue()
             let value = result(obj)
@@ -113,7 +113,7 @@ extension Connection {
             return value
         }
 
-        let state: () -> UnsafeMutablePointer<UnsafeMutableRawPointer> = {
+        let state: @Sendable () -> UnsafeMutablePointer<UnsafeMutableRawPointer> = {
             let pointer = UnsafeMutablePointer<UnsafeMutableRawPointer>.allocate(capacity: 1)
             pointer.pointee = Unmanaged.passRetained(initialValue).toOpaque()
             return pointer
@@ -127,23 +127,23 @@ extension Connection {
             argumentCount: UInt? = nil,
             deterministic: Bool = false,
             initialValue: T,
-            reduce: @escaping (T, [Binding?]) -> T,
-            result: @escaping (T) -> Binding?
-    ) {
+            reduce: @escaping @Sendable (T, [Binding?]) -> T,
+            result: @escaping @Sendable (T) -> Binding?
+    ) where T: Sendable {
 
-        let step: ([Binding?], UnsafeMutablePointer<T>) -> Void = { (bindings, pointer) in
+        let step: @Sendable ([Binding?], UnsafeMutablePointer<T>) -> Void = { (bindings, pointer) in
             let current = pointer.pointee
             let next = reduce(current, bindings)
             pointer.pointee = next
         }
 
-        let final: (UnsafeMutablePointer<T>) -> Binding? = { pointer in
+        let final: @Sendable (UnsafeMutablePointer<T>) -> Binding? = { pointer in
             let value = result(pointer.pointee)
             pointer.deallocate()
             return value
         }
 
-        let state: () -> UnsafeMutablePointer<T> = {
+        let state: @Sendable () -> UnsafeMutablePointer<T> = {
             let pointer = UnsafeMutablePointer<T>.allocate(capacity: 1)
             pointer.initialize(to: initialValue)
             return pointer
