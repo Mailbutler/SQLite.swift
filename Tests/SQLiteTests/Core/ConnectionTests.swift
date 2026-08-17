@@ -20,6 +20,24 @@ class ConnectionTests: SQLiteTestCase {
         try createUsersTable()
     }
 
+    func test_busyTimeout_roundTripsThroughTheConfigurationLock() throws {
+        let db = try Connection(.inMemory)
+
+        XCTAssertEqual(0, db.busyTimeout)
+
+        db.busyTimeout = 2.0
+        XCTAssertEqual(2.0, db.busyTimeout)
+    }
+
+    func test_usesExtendedErrorCodes_roundTripsThroughTheConfigurationLock() throws {
+        let db = try Connection(.inMemory)
+
+        XCTAssertFalse(db.usesExtendedErrorCodes)
+
+        db.usesExtendedErrorCodes = true
+        XCTAssertTrue(db.usesExtendedErrorCodes)
+    }
+
     func test_init_withInMemory_returnsInMemoryConnection() throws {
         let db = try Connection(.inMemory)
         XCTAssertEqual("", db.description)
