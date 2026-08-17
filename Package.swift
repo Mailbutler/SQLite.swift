@@ -36,11 +36,13 @@ defaultTraits = ["SystemSQLite"]
 
 let package = Package(
     name: "SQLite.swift",
+    // Raised for OSAllocatedUnfairLock, which is what lets Connection be checked Sendable rather
+    // than @unchecked — see Connection.Configuration.
     platforms: [
-        .iOS(.v12),
-        .macOS(.v10_13),
-        .watchOS(.v4),
-        .tvOS(.v12),
+        .iOS(.v16),
+        .macOS(.v13),
+        .watchOS(.v9),
+        .tvOS(.v16),
         .visionOS(.v1)
     ],
     products: [
